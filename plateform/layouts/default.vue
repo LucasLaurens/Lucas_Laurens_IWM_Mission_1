@@ -1,7 +1,9 @@
 <template>
   <div v-show="this.is_loaded === true">
     <navbar />
-    <nuxt />
+    <div v-show="menu_active === false">
+      <nuxt />
+    </div>
   </div>
 </template>
 
@@ -18,6 +20,9 @@ export default {
   },
   components: {
     Navbar
+  },
+  computed: {
+     ...Vuex.mapGetters(['menu_active'])
   },
 }
 </script>

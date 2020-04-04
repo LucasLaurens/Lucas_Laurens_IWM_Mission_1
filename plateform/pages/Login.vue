@@ -1,5 +1,6 @@
 <template>
-  <div class="fullscreen containe">
+  <div class="fullscreen container">
+      <h1 class="big-title">Login</h1>
      <form>
       <div class="form-group group">
         <input type="email" class="form-control input-style" id="email" placeholder="Email..." v-model="email" />

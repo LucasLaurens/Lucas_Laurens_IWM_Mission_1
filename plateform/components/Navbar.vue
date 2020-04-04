@@ -1,24 +1,75 @@
 <template>
   <div>
      <div class="main">
-         <div class="main-links">
-             <nuxt-link to="/">Index</nuxt-link>
-             <nuxt-link to="/login">Login</nuxt-link>
-             <nuxt-link to="/signup">Sign Up</nuxt-link>
-             <button type="button" @click.prevent="on_logout">logout</button>
-         </div>
+        <nav class="navbar navbar-expand-lg d-flex">
+            <div class="card-menu">
+                <div class="btn-menu">
+                    <button @click.prevent="toggle_menu">Menu</button>
+                </div>
+            </div>
+            <div class="main-links">
+                <ul>
+                    <li v-if="getUser !== '' && getUser !== null" @click.prevent="on_logout">
+                        <button type="button" class="btn-style float-right">Logout</button>
+                    </li>
+                     <li @click.prevent="on_link" v-else>
+                       <nuxt-link to="/login" class="btn-style float-right">Login</nuxt-link>
+                    </li>
+                    <li v-if="getUser === '' || getUser === null">
+                       <nuxt-link type="button" to="/signup" class="btn-style float-right mr-2">Sign Up</nuxt-link>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="toggle-menu" :class="[{'menu_active' : (menu_active == true)}]">
+            <div class="container mt-4">
+                <ul>
+                    <li @click.prevent="on_link">
+                        <nuxt-link to="/" class="menu-link">Dashboard</nuxt-link>
+                    </li>
+                </ul>
+            </div>
+        </div>
      </div>
   </div>
 </template>
 <script>
 import * as firebase from "firebase/app";
 import { _logout } from '../components/functions/Auth'
+import store from '../store/store'
+import Vuex from 'vuex'
 
 export default {
+    store,
     name: "navbar",
+     data() {
+        return {
+            getUser: '',
+            menu_active: false
+        }
+    },
+    mounted() {
+        this.getUser = localStorage.getItem('user')
+    },
     methods: {
+        ...Vuex.mapActions({
+            change_active: 'toggle_menu',
+            change_active: 'on_link',
+        }),
         on_logout: function() {
+            this.getUser = localStorage.getItem('user')
+            on_link()
             _logout()
+        },
+        toggle_menu: function() {
+           this.menu_active = !this.menu_active
+           this.change_active = this.menu_active
+        },
+        on_link: function() {
+            if(this.menu_active === true) {
+                this.menu_active = false
+                this.change_active = this.menu_active
+            }
         }
     },
 }

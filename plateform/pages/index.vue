@@ -1,6 +1,7 @@
 <template>
-  <div class="container">
-    <div v-show="getUser !== ''">
+  <div class="fullscreen container">
+    <h1 class="big-title">Index</h1>
+    <div v-show="getUser !== '' && getUser !== null">
       {{getUser}}
     </div>
   </div>

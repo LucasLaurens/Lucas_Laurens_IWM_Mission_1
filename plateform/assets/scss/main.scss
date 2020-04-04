@@ -8,23 +8,154 @@
 
 body {
     background: $main-color;
+    .main {
+        nav {
+            border-bottom: 3px solid $second-color;
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-left: 0;
+            padding-right: 15px;
+            .card-menu {
+                position: relative;
+                height: 100%;
+                padding: 1%;
+                width: 5em;
+                text-align: center;
+                &::before {
+                    content: "";
+                    position: absolute;
+                    background: $second-color;
+                    height: 100%;
+                    width: 100%;
+                    top: 0%;
+                    left: 0%;
+                    z-index: -1;
+                }
+                .btn-menu {
+                    button {
+                        color: #fff;
+                        background: none;
+                        border: none;
+                        outline: none;
+                        box-shadow: none;
+                        transition: .3s ease-in;
+                        &:hover {
+                            color: $main-color;
+                        }
+                        &:focus {
+                            color: $main-color;
+                        }
+                    }
+                }
+            }
+            .main-links {
+                flex: 1;
+                ul {
+                    li {
+                        list-style: none;
+                    }
+                }
+            }
+        }
+        .menu_active {
+            transition: .3s ease-in;
+            background: $second-color;
+            height: 100vh;
+            width: 100vw;
+            opacity: 1 !important;
+            overflow: hidden;
+            ul {
+                li {
+                    position: relative;
+                    list-style: none;
+                    .menu-link {
+                        text-decoration: none;
+                        font-size: 48px;
+                        font-weight: 700;
+                        color: rgba(255, 255, 255, 0.5);
+                        transition: .3s ease-in;
+                        &:hover {
+                            color: #fff;
+                        }
+                    }
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        top: 40%;
+                        left: -5%;
+                        height: 15px;
+                        width: 15px;
+                        transform: rotate(45deg);
+                        background: rgba(255, 255, 255, 0.5);
+                        transition: .3s ease-in;
+                    }
+                    &:hover {
+                        &:before {
+                            background: #fff;
+                        }
+                    }
+                }
+            }
+        }
+        .toggle-menu {
+            opacity: 0;
+        }
+    }
     .fullscreen {
+        transition: .3s ease-in;
         height: 100vh;
+        .big-title {
+            font-size: 144px;
+            color: rgba(255, 255, 255, .3);
+        }
+    }
+    .btn-style {
+        position: relative;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        border-radius: 0;
+        color: $second-color;
+        background: transparent;
+        text-decoration: none;
+        transition: .3s ease-in;
+        border: 3px solid $second-color;
+        &:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            transition: .3s ease-in;
+            background: $second-color;
+            z-index: -1;
+        }
+        &:focus {
+            box-shadow: none;
+            outline: none;
+        }
+        &:hover {
+            position: relative;
+            color: $main-color;
+            &:before {
+                width: 100%;
+            }
+        }
     }
     form {
         position: relative;
-        top: 35%;
+        top: 15%;
         margin: 0 15%;
         text-align: center;
         .group {
-            margin-bottom: 3rem !important;
+            margin-bottom: 5rem !important;
             position: relative;
             label {
                 color: transparent;
                 transition: .3s ease-in;
                 position: absolute;
-                top: -25px;
-                left: 25px;
+                top: -100%;
+                left: 0;
                 font-weight: 700;
             }
             .input-style {
@@ -45,36 +176,6 @@ body {
                     +label {
                         color: $second-color;
                     }
-                }
-            }
-        }
-        .btn-style {
-            position: relative;
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-            border-radius: 0;
-            color: $second-color;
-            transition: .3s ease-in;
-            border: 3px solid $second-color;
-            &:before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 0;
-                height: 100%;
-                transition: .3s ease-in;
-                background: $second-color;
-                z-index: -1;
-            }
-            &:focus {
-                box-shadow: none;
-            }
-            &:hover {
-                position: relative;
-                color: $main-color;
-                &:before {
-                    width: 100%;
                 }
             }
         }

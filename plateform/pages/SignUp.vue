@@ -1,5 +1,6 @@
 <template>
-  <div class="fullscreen containe">
+  <div class="fullscreen container">
+      <h1 class="big-title">Sign In</h1>
      <form>
         <div class="d-flex">
               <div class="form-group group col-md-6">
