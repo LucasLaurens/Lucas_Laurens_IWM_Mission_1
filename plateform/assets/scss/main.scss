@@ -14,22 +14,38 @@ body {
     form {
         position: relative;
         top: 35%;
-        margin: 0 35%;
+        margin: 0 15%;
         text-align: center;
-        .input-style {
-            background: $main-color;
-            color: #fff;
-            border-top: 0;
-            border-left: 0;
-            border-right: 0;
-            border-bottom: 3px solid $second-color;
-            border-radius: 0;
-            @include placeholder();
-            &:focus {
+        .group {
+            margin-bottom: 3rem !important;
+            position: relative;
+            label {
+                color: transparent;
+                transition: .3s ease-in;
+                position: absolute;
+                top: -25px;
+                left: 25px;
+                font-weight: 700;
+            }
+            .input-style {
                 background: $main-color;
                 color: #fff;
+                border-top: 0;
+                border-left: 0;
+                border-right: 0;
                 border-bottom: 3px solid $second-color;
-                box-shadow: none;
+                border-radius: 0;
+                transition: .3s ease-in;
+                @include placeholder();
+                &:focus {
+                    background: $main-color;
+                    color: #fff;
+                    border-bottom: 3px solid #fff;
+                    box-shadow: none;
+                    +label {
+                        color: $second-color;
+                    }
+                }
             }
         }
         .btn-style {

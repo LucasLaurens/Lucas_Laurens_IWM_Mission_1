@@ -1,0 +1,57 @@
+<template>
+  <div class="fullscreen containe">
+     <form>
+        <div class="d-flex">
+              <div class="form-group group col-md-6">
+                <input type="firstName" class="form-control input-style" id="firstName" placeholder="First Name..." v-model="firstName" />
+                <label for="firstName">First Name</label>
+            </div>
+            <div class="form-group group col-md-6">
+                <input type="lastName" class="form-control input-style" id="lastName" placeholder="Last Name..." v-model="lastName" />
+                <label for="lastName">Last Name</label>
+            </div>
+        </div>
+        <div class="form-group group col-md-12">
+            <input type="email" class="form-control input-style" id="email" placeholder="Email..." v-model="email" />
+            <label for="email">Email</label>
+        </div>
+        <div class="d-flex">
+            <div class="form-group group col-md-6">
+                <input type="password" class="form-control input-style" id="password" placeholder="Password..." v-model="password" />
+                <label for="password">Password</label>
+            </div>
+            <!-- <div class="form-group group col-md-6">
+                <input type="password" class="form-control input-style" id="confirm_password" placeholder="Confirm Password..." v-model="confirm_password" />
+                <label for="confirm_password">Confirm Password</label>
+            </div> -->
+        </div>
+        <button type="button" class="btn btn-style" @click.prevent="signUp">Sign Up</button>
+    </form>
+  </div>
+</template>
+<script>
+import * as firebase from "firebase/app";
+import { sign_up } from '../components/functions/Auth'
+
+export default {
+    name: "signup",
+    data() {
+      return {
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        // confirm_password: '',
+        // errors: [],
+        // emailRegex: /^[A-Za-z0-9+_.-]+@(.+)$/gm,
+      }
+    },
+    methods: {
+        signUp: function() {
+            sign_up(this.firstName, this.lastName, this.email, this.password)
+
+            this.$nuxt.$router.replace({ path: '/login' })
+        }
+    }
+}
+</script>

@@ -1,11 +1,13 @@
 <template>
-  <div class="fullscreen containe" v-show="is_loaded === true">
+  <div class="fullscreen containe">
      <form>
-      <div class="form-group mb-4">
-        <input type="email" class="form-control input-style" id="email" placeholder="email..." v-model="email" />
+      <div class="form-group group">
+        <input type="email" class="form-control input-style" id="email" placeholder="Email..." v-model="email" />
+        <label for="email">Email</label>
       </div>
-      <div class="form-group mb-4">
-        <input type="password" class="form-control input-style" id="password" placeholder="password..." v-model="password" />
+      <div class="form-group group">
+        <input type="password" class="form-control input-style" id="password" placeholder="Password..." v-model="password" />
+        <label for="password">Password</label>
       </div>
       <button type="button" class="btn btn-style" @click.prevent="login">Login</button>
 
@@ -23,26 +25,25 @@ export default {
     name: "login",
     data() {
       return {
-        is_loaded: false,
         email: '',
         password: '',
         errors: [],
         // emailRegex: /^[A-Za-z0-9+_.-]+@(.+)$/gm,
       }
     },
-    created() {
-      this.is_loaded = true
-    },
     methods: {
       login: function () {
         let error_message
-        if(this.is_loaded === true) {
-          logged_in(this.email, this.password)
-          error_message = localStorage.getItem('errorMessage')
-          if(error_message !== "") {
+
+        logged_in(this.email, this.password)
+        error_message = localStorage.getItem('errorMessage')
+        if(error_message !== "") {
+          if (!this.errors.includes(error_message)) {
             this.errors.push(error_message)
           }
         }
+
+        this.$nuxt.$router.replace({ path: '/' })
       }
     }
 }
