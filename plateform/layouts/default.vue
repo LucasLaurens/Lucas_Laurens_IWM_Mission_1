@@ -1,14 +1,22 @@
 <template>
-  <div v-show="this.is_loaded === true">
-    <navbar />
-    <div v-show="items[0].menu_active === false">
-      <nuxt />
+  <div>
+    <div v-if="this.is_loaded !== true">
+      <div class="loader">
+        <loader />
+      </div>
+    </div>
+    <div v-else>
+      <navbar />
+      <div v-show="items[0].menu_active === false">
+        <nuxt />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import Navbar from '../components/Navbar'
+import Loader from "../components/Loader";
 import store from '../store/store'
 import Vuex from 'vuex'
 
@@ -20,10 +28,11 @@ export default {
     }
   },
   created() {
-    this.is_loaded = true
+      this.is_loaded = true
   },
   components: {
-    Navbar
+    Navbar,
+    Loader
   },
   computed: {
     items () {

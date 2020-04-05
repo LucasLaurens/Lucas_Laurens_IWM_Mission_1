@@ -17,5 +17,14 @@ export default {
   mounted() {
     this.getUser = localStorage.getItem('user')
   },
+  watch: {
+    getUser: {
+      handler() {
+        this.getUser = localStorage.getItem('user')
+        console.log("user", this.getUser)
+      },
+      deep: true,
+    },
+  },
 }
 </script>

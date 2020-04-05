@@ -1,8 +1,8 @@
 <template>
   <div>
      <div class="main">
-        <nav class="navbar navbar-expand-lg d-flex">
-            <div class="card-menu">
+        <nav class="navbar navbar-expand-lg d-flex fixed-top">
+            <div class="card-menu" >
                 <div class="btn-menu">
                     <button @click.prevent="toggle_menu">Menu</button>
                 </div>
@@ -21,11 +21,19 @@
                 </ul>
             </div>
         </nav>
-        <div class="toggle-menu" :class="[{'menu_active' : (menu_active == true)}]">
+        <div class="toggle-menu" :class="[{'menu_active' : (menu_active == true)}]" >
             <div class="container mt-4">
-                <ul>
+                <ul v-if="getUser !== '' && getUser !== null">
                     <li @click.prevent="on_link">
-                        <nuxt-link to="/" class="menu-link">Dashboard</nuxt-link>
+                        <nuxt-link to="/projects/dashboard" class="menu-link">Projects</nuxt-link>
+                    </li>
+                    <li @click.prevent="on_link">
+                        <nuxt-link to="/projects/create" class="menu-link">Create</nuxt-link>
+                    </li>
+                </ul>
+                <ul v-else>
+                    <li @click.prevent="on_link">
+                        <span class="menu-link">you are not connected</span>
                     </li>
                 </ul>
             </div>
@@ -58,8 +66,8 @@ export default {
                 change_active: 'on_link'
             }),
         on_logout: function() {
-            this.getUser = localStorage.getItem('user')
-            on_link()
+            this.on_link()
+            this.getUser = ''
             _logout()
         },
         toggle_menu: function() {
@@ -72,6 +80,14 @@ export default {
                 this.change_active(this.menu_active)
             }
         }
+    },
+    watch: {
+        getUser: {
+            handler() {
+                this.getUser = localStorage.getItem('user')
+            },
+            deep: true,
+        },
     },
 }
 </script>

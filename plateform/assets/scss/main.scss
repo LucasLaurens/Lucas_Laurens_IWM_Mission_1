@@ -8,8 +8,19 @@
 
 body {
     background: $main-color;
+    .loader {
+        position: absolute;
+        top: 35%;
+        left: 45%;
+        .text-load {
+            color: $second-color;
+            text-align: center;
+            font-weight: 700;
+        }
+    }
     .main {
         nav {
+            background: $main-color;
             border-bottom: 3px solid $second-color;
             padding-top: 0;
             padding-bottom: 0;
@@ -65,14 +76,12 @@ body {
             opacity: 1 !important;
             overflow: hidden;
             ul {
+                margin-top: 15rem;
+                margin-left: 15rem;
                 li {
                     position: relative;
                     list-style: none;
                     .menu-link {
-                        text-decoration: none;
-                        font-size: 48px;
-                        font-weight: 700;
-                        color: rgba(255, 255, 255, 0.5);
                         transition: .3s ease-in;
                         &:hover {
                             color: #fff;
@@ -99,6 +108,16 @@ body {
         }
         .toggle-menu {
             opacity: 0;
+            ul {
+                li {
+                    .menu-link {
+                        text-decoration: none;
+                        color: rgba(255, 255, 255, 0.5);
+                        font-size: 48px;
+                        font-weight: 700;
+                    }
+                }
+            }
         }
     }
     .fullscreen {
@@ -107,6 +126,28 @@ body {
         .big-title {
             font-size: 144px;
             color: rgba(255, 255, 255, .3);
+        }
+        .form-project {
+            width: 100%;
+            form {
+                div {
+                    div {
+                        input {
+                            background: $main-color;
+                            border: none;
+                            border-bottom: 3px solid $second-color;
+                            border-radius: 0;
+                            color: $second-color;
+                            box-shadow: none;
+                            outline: none;
+                            @include placeholder();
+                        }
+                    }
+                }
+                button {
+                    float: left;
+                }
+            }
         }
     }
     .btn-style {

@@ -20,6 +20,11 @@ async function start () {
     await builder.build()
   }
 
+  // app.get('/', function(req, res) {
+  //  console.log('easter eggs pattern : https://www.figma.com/file/2y4nvA0KEuHEDzYxAFwevZ/Projet-Mission-1?node-id=0%3A1')
+  //  res.redirect('/')
+  // })
+
   // Give nuxt middleware to express
   app.use(nuxt.render)
 
