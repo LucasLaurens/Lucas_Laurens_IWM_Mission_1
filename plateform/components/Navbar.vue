@@ -15,7 +15,7 @@
                      <li @click.prevent="on_link" v-else>
                        <nuxt-link to="/login" class="btn-style float-right">Login</nuxt-link>
                     </li>
-                    <li v-if="getUser === '' || getUser === null">
+                    <li v-if="getUser === '' || getUser === null" @click.prevent="on_link">
                        <nuxt-link type="button" to="/signup" class="btn-style float-right mr-2">Sign Up</nuxt-link>
                     </li>
                 </ul>
@@ -40,7 +40,7 @@ import store from '../store/store'
 import Vuex from 'vuex'
 
 export default {
-    store,
+    // store,
     name: "navbar",
      data() {
         return {
@@ -53,9 +53,10 @@ export default {
     },
     methods: {
         ...Vuex.mapActions({
-            change_active: 'toggle_menu',
-            change_active: 'on_link',
-        }),
+                change_active: 'toggle_menu'
+            }, {
+                change_active: 'on_link'
+            }),
         on_logout: function() {
             this.getUser = localStorage.getItem('user')
             on_link()
@@ -63,12 +64,12 @@ export default {
         },
         toggle_menu: function() {
            this.menu_active = !this.menu_active
-           this.change_active = this.menu_active
+           this.change_active(this.menu_active)
         },
         on_link: function() {
             if(this.menu_active === true) {
                 this.menu_active = false
-                this.change_active = this.menu_active
+                this.change_active(this.menu_active)
             }
         }
     },

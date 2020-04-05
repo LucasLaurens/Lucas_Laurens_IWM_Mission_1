@@ -1,7 +1,7 @@
 <template>
   <div v-show="this.is_loaded === true">
     <navbar />
-    <div v-show="menu_active === false">
+    <div v-show="items[0].menu_active === false">
       <nuxt />
     </div>
   </div>
@@ -9,7 +9,11 @@
 
 <script>
 import Navbar from '../components/Navbar'
+import store from '../store/store'
+import Vuex from 'vuex'
+
 export default {
+  store,
   data() {
     return {
       is_loaded: false,
@@ -22,7 +26,9 @@ export default {
     Navbar
   },
   computed: {
-     ...Vuex.mapGetters(['menu_active'])
+    items () {
+      return this.$store.state.items
+    }
   },
 }
 </script>

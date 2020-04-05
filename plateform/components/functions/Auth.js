@@ -31,7 +31,7 @@ export const _logout = () => {
                 alert(error.message);
             });
     } catch (error) {
-        console.log(error.toString());
+        console.error(error.toString());
     }
 };
 
