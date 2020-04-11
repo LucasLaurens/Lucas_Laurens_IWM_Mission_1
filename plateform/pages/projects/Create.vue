@@ -1,5 +1,5 @@
 <template>
-  <div class="fullscreen container" v-if="getUser !== '' && getUser !== null">
+  <div class="fullscreen container">
       <h1 class="big-title">Create</h1>
       <div class="row">
           <div class="form-project mt-4">
@@ -55,9 +55,12 @@ export default {
 
                 alertsReference.push({
                     "title": this.title,
-                    "descriptiuon": this.description,
+                    "description": this.description,
                     "date": Date.now(),
                 })
+
+                this.title = ""
+                this.description = ""
             }
         }
     },
