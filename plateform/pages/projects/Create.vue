@@ -54,9 +54,9 @@ export default {
                 const alertsReference = rootReference.child("projects");
 
                 alertsReference.push({
-                    "title": this.title,
-                    "description": this.description,
-                    "date": Date.now(),
+                    title: this.title,
+                    description: this.description,
+                    date: Date.now(),
                 })
 
                 this.title = ""
