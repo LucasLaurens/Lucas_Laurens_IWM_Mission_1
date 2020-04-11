@@ -33,7 +33,7 @@
                 {{project.description}}
               </td>
 
-              <td>{{project.date}}</td>
+              <td>{{project.date.getFullYear()}} / {{project.date.getMonth() + 1}} / {{project.date.getDate()}} - {{project.date.getHours()}}:{{project.date.getMinutes()}}:{{project.date.getSeconds()}}</td>
 
               <td v-if="project.status !== 'created'">
                <button class="btn btn-secondary" @click="_item_save(project.id, k)">Save</button>
