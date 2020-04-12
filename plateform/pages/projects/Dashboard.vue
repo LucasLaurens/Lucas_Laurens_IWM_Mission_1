@@ -122,7 +122,7 @@ export default {
 
             this.title        = await ""
             this.description  = await ""
-            this.errors       = await ""
+            this.errors       = await []
           } else {
             let new_error = "Your field(s) not to be empty"
             if(!this.errors.includes(new_error)) {

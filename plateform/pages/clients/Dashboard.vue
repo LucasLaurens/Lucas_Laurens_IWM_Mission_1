@@ -54,7 +54,7 @@
                     <td>{{client.date.getFullYear()}} / {{client.date.getMonth() + 1}} / {{client.date.getDate()}} - {{client.date.getHours()}}:{{client.date.getMinutes()}}:{{client.date.getSeconds()}}</td>
 
                     <td v-if="client.status !== 'created'">
-                    <button class="btn btn-secondary" @click="_item_save(client.id, k)">Save</button>
+                      <button class="btn btn-secondary" @click="_item_save(client.id, k)">Save</button>
                     </td>
                     <td v-else>
                         <button class="btn btn-secondary col-sm-12 col-xs-12" @click="_item_edit(k)">Edit</button>
@@ -154,7 +154,8 @@ export default {
             this.lastName         = await ""
             this.email            = await ""
             this.phone            = await ""
-            this.errors           = await ""
+            this.errors           = await []
+
           } else {
             let new_error = "Your field(s) not to be empty"
             if(!this.errors.includes(new_error)) {
