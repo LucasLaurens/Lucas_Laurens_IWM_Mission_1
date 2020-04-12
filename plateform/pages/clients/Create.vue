@@ -1,0 +1,95 @@
+<template>
+  <div class="fullscreen container">
+      <h1 class="big-title">Create</h1>
+      <div class="row">
+          <div class="form-project mt-4">
+            <b-form>
+                <b-form-group
+                    id="input-group-firstName"
+                    label-for="input-firstName"
+                >
+                    <b-form-input
+                    id="input-firstName"
+                    type="text"
+                    required
+                    placeholder="Enter your first name"
+                    v-model="firstName"
+                    ></b-form-input>
+                </b-form-group>
+
+                <b-form-group id="input-group-lastName" label-for="input-2">
+                    <b-form-input
+                    type="text"
+                    id="input-lastName"
+                    required
+                    placeholder="Enter your last name"
+                    v-model="lastName"
+                    ></b-form-input>
+                </b-form-group>
+
+                <b-form-group id="input-group-email" label-for="input-2">
+                    <b-form-input
+                    type="email"
+                    id="input-email"
+                    required
+                    placeholder="Enter your email"
+                    v-model="email"
+                    ></b-form-input>
+                </b-form-group>
+
+                <b-form-group id="input-group-phone" label-for="input-2">
+                    <b-form-input
+                    type="tel"
+                    id="input-phone"
+                    required
+                    placeholder="Enter your phone number"
+                    v-model="phone"
+                    ></b-form-input>
+                </b-form-group>
+
+                <b-button type="submit" @click.prevent="_create_project" class="btn-style">Create</b-button>
+            </b-form>
+        </div>
+      </div>
+  </div>
+</template>
+<script>
+import * as firebase from "firebase/app";
+
+export default {
+    name: "client-create",
+    data() {
+        return {
+            firstName: '',
+            lastName: '',
+            email: '',
+            phone: '',
+            getUser: '',
+        }
+    },
+    methods: {
+        _create_project: function() {
+            this.getUser = localStorage.getItem('user')
+
+            if(this.getUser !== '' && this.getUser !== null) {
+                // Firebase references
+                const rootReference = firebase.database().ref();
+                const alertsReference = rootReference.child("clients");
+
+                alertsReference.push({
+                    firstName: this.firstName,
+                    lastName: this.lastName,
+                    email: this.email,
+                    phone: this.phone,
+                    date: Date.now(),
+                })
+
+                this.firstName = ""
+                this.lastName  = ""
+                this.email     = ""
+                this.phone     = ""
+            }
+        }
+    },
+}
+</script>

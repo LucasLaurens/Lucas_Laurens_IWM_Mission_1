@@ -28,7 +28,13 @@
                         <nuxt-link to="/projects/dashboard" class="menu-link">Projects</nuxt-link>
                     </li>
                     <li @click.prevent="on_link">
-                        <nuxt-link to="/projects/create" class="menu-link">Create</nuxt-link>
+                        <nuxt-link to="/projects/create" class="menu-link">Create Project</nuxt-link>
+                    </li>
+                    <li @click.prevent="on_link">
+                        <nuxt-link to="/clients/dashboard" class="menu-link">Clients</nuxt-link>
+                    </li>
+                    <li @click.prevent="on_link">
+                        <nuxt-link to="/clients/create" class="menu-link">Create Client</nuxt-link>
                     </li>
                 </ul>
                 <ul v-else>
