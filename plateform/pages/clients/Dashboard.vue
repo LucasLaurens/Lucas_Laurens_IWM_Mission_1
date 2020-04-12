@@ -16,6 +16,7 @@
                     <th scope="col">Phone</th>
                     <th scope="col">Date</th>
                     <th scope="col">Manage</th>
+                    <th scope="col">Pdf</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -56,9 +57,11 @@
                     <button class="btn btn-secondary" @click="_item_save(client.id, k)">Save</button>
                     </td>
                     <td v-else>
+                        <button class="btn btn-secondary col-sm-12 col-xs-12" @click="_item_edit(k)">Edit</button>
+                        <button class="btn btn-danger col-sm-12 col-xs-12 mt-2" @click="_item_delete(client.id, k)">Delete</button>
+                    </td>
+                    <td>
                         <button class="btn btn-success" @click="_item_pdf(client)">Download</button>
-                        <button class="btn btn-secondary" @click="_item_edit(k)">Edit</button>
-                        <button class="btn btn-danger" @click="_item_delete(client.id, k)">Delete</button>
                     </td>
                     </tr>
                 </tbody>
