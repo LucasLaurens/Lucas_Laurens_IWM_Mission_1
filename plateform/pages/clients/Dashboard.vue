@@ -1,71 +1,79 @@
 <template>
   <div class="fullscreen container">
-      <h1 class="big-firstName">clients</h1>
+      <h1 class="big-title">Clients</h1>
       <div class="clients">
         <div class="errors alert alert-danger" v-for="(error, k) in errors" :key="k">
           {{error}}
         </div>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">Number</th>
-              <th scope="col">First Name</th>
-              <th scope="col">Last Name</th>
-              <th scope="col">Email</th>
-              <th scope="col">Phone</th>
-              <th scope="col">Date</th>
-              <th scope="col">Manage</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(client, k) in clients" :key="k">
-              <td><strong>#{{k+1}}</strong></td>
+        <div v-if="clients.length > 0">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                    <th scope="col">Number</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Manage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(client, k) in clients" :key="k">
+                    <td><strong>#{{k+1}}</strong></td>
 
-              <td v-if="client.status !== 'created'">
-                <input v-model="firstName" type="text" placeholder="firstName" id="firstName" name="firstName" />
-              </td>
-              <td v-else>
-                {{client.firstName}}
-              </td>
+                    <td v-if="client.status !== 'created'">
+                        <input v-model="firstName" type="text" placeholder="firstName" id="firstName" name="firstName" />
+                    </td>
+                    <td v-else>
+                        {{client.firstName}}
+                    </td>
 
-              <td v-if="client.status !== 'created'">
-                <input v-model="lastName" type="text" placeholder="lastName" id="lastName" name="lastName" />
-              </td>
-              <td v-else>
-                {{client.lastName}}
-              </td>
+                    <td v-if="client.status !== 'created'">
+                        <input v-model="lastName" type="text" placeholder="lastName" id="lastName" name="lastName" />
+                    </td>
+                    <td v-else>
+                        {{client.lastName}}
+                    </td>
 
-              <td v-if="client.status !== 'created'">
-                <input v-model="email" type="text" placeholder="email" id="email" name="email" />
-              </td>
-              <td v-else>
-                {{client.email}}
-              </td>
+                    <td v-if="client.status !== 'created'">
+                        <input v-model="email" type="text" placeholder="email" id="email" name="email" />
+                    </td>
+                    <td v-else>
+                        {{client.email}}
+                    </td>
 
-              <td v-if="client.status !== 'created'">
-                <input v-model="phone" type="text" placeholder="phone" id="phone" name="phone" />
-              </td>
-              <td v-else>
-                {{client.phone}}
-              </td>
+                    <td v-if="client.status !== 'created'">
+                        <input v-model="phone" type="text" placeholder="phone" id="phone" name="phone" />
+                    </td>
+                    <td v-else>
+                        {{client.phone}}
+                    </td>
 
-              <td>{{client.date.getFullYear()}} / {{client.date.getMonth() + 1}} / {{client.date.getDate()}} - {{client.date.getHours()}}:{{client.date.getMinutes()}}:{{client.date.getSeconds()}}</td>
+                    <td>{{client.date.getFullYear()}} / {{client.date.getMonth() + 1}} / {{client.date.getDate()}} - {{client.date.getHours()}}:{{client.date.getMinutes()}}:{{client.date.getSeconds()}}</td>
 
-              <td v-if="client.status !== 'created'">
-               <button class="btn btn-secondary" @click="_item_save(client.id, k)">Save</button>
-              </td>
-              <td v-else>
-                <button class="btn btn-secondary" @click="_item_edit(k)">Edit</button>
-                <button class="btn btn-danger" @click="_item_delete(client.id, k)">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                    <td v-if="client.status !== 'created'">
+                    <button class="btn btn-secondary" @click="_item_save(client.id, k)">Save</button>
+                    </td>
+                    <td v-else>
+                        <button class="btn btn-success" @click="_item_pdf(client)">Download</button>
+                        <button class="btn btn-secondary" @click="_item_edit(k)">Edit</button>
+                        <button class="btn btn-danger" @click="_item_delete(client.id, k)">Delete</button>
+                    </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div v-else class="alert alert-warning">
+            There is no clients for now
+        </div>
+
       </div>
   </div>
 </template>
 <script>
 import * as firebase from "firebase/app";
+import jsPDF from 'jspdf'
 
 export default {
     name: "clients",
@@ -150,6 +158,16 @@ export default {
               this.errors.push(new_error)
             }
           }
+        },
+        _item_pdf: function(client) {
+          let pdf       = new jsPDF();
+          let pdf_name  = `${client.firstName}_${client.lastName}.pdf`
+
+          pdf.text('first name : ' + client.firstName, 10, 10);
+          pdf.text('filastrst name : ' + client.lastName, 10, 20);
+          pdf.text('email : ' + client.email, 10, 30);
+          pdf.text('phone : ' + client.phone, 10, 40);
+          pdf.save(pdf_name);
         }
     },
 }

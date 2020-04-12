@@ -1,6 +1,6 @@
 <template>
   <div class="fullscreen container">
-      <h1 class="big-title">Create</h1>
+      <h1 class="big-title">Create Project</h1>
       <div class="row">
           <div class="form-project mt-4">
             <b-form>

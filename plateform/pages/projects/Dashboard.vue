@@ -5,46 +5,51 @@
         <div class="errors alert alert-danger" v-for="(error, k) in errors" :key="k">
           {{error}}
         </div>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">Number</th>
-              <th scope="col">Title</th>
-              <th scope="col">Description</th>
-              <th scope="col">Date</th>
-              <th scope="col">Manage</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(project, k) in projects" :key="k">
-              <td><strong>#{{k+1}}</strong></td>
+        <div v-if="projects.length > 0">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Number</th>
+                <th scope="col">Title</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date</th>
+                <th scope="col">Manage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(project, k) in projects" :key="k">
+                <td><strong>#{{k+1}}</strong></td>
 
-              <td v-if="project.status !== 'created'">
-                <input v-model="title" type="text" placeholder="title" id="title" name="title" />
-              </td>
-              <td v-else>
-                {{project.title}}
-              </td>
+                <td v-if="project.status !== 'created'">
+                  <input v-model="title" type="text" placeholder="title" id="title" name="title" />
+                </td>
+                <td v-else>
+                  {{project.title}}
+                </td>
 
-              <td v-if="project.status !== 'created'">
-                <input v-model="description" type="text" placeholder="description" id="description" name="description" />
-              </td>
-              <td v-else>
-                {{project.description}}
-              </td>
+                <td v-if="project.status !== 'created'">
+                  <input v-model="description" type="text" placeholder="description" id="description" name="description" />
+                </td>
+                <td v-else>
+                  {{project.description}}
+                </td>
 
-              <td>{{project.date.getFullYear()}} / {{project.date.getMonth() + 1}} / {{project.date.getDate()}} - {{project.date.getHours()}}:{{project.date.getMinutes()}}:{{project.date.getSeconds()}}</td>
+                <td>{{project.date.getFullYear()}} / {{project.date.getMonth() + 1}} / {{project.date.getDate()}} - {{project.date.getHours()}}:{{project.date.getMinutes()}}:{{project.date.getSeconds()}}</td>
 
-              <td v-if="project.status !== 'created'">
-               <button class="btn btn-secondary" @click="_item_save(project.id, k)">Save</button>
-              </td>
-              <td v-else>
-                <button class="btn btn-secondary" @click="_item_edit(k)">Edit</button>
-                <button class="btn btn-danger" @click="_item_delete(project.id, k)">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                <td v-if="project.status !== 'created'">
+                <button class="btn btn-secondary" @click="_item_save(project.id, k)">Save</button>
+                </td>
+                <td v-else>
+                  <button class="btn btn-secondary" @click="_item_edit(k)">Edit</button>
+                  <button class="btn btn-danger" @click="_item_delete(project.id, k)">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="alert alert-warning" v-else>
+           There is no projects for now
+        </div>
       </div>
   </div>
 </template>
