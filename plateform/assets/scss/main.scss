@@ -6,6 +6,36 @@
     &::placeholder                { color: $color; }
 }
 
+@mixin keyframes($animation-name) {
+    @-webkit-keyframes #{$animation-name} {
+        @content;
+    }
+    @-moz-keyframes #{$animation-name} {
+        @content;
+    }
+    @-ms-keyframes #{$animation-name} {
+        @content;
+    }
+    @-o-keyframes #{$animation-name} {
+        @content;
+    }
+    @keyframes #{$animation-name} {
+        @content;
+    }
+}
+
+@mixin animation($str) {
+    -webkit-animation: #{$str};
+    -moz-animation: #{$str};
+    -ms-animation: #{$str};
+    -o-animation: #{$str};
+    animation: #{$str};
+}
+
+@include keyframes(animBefore) {
+    50% { width: 100%; }
+}
+
 body {
     background: $main-color;
     .loader {
@@ -123,6 +153,35 @@ body {
     .fullscreen {
         transition: .3s ease-in;
         height: 100vh;
+        .animation {
+            position: relative;
+            width: 100%;
+            color: #fff;
+            font-size: 64px;
+            font-weight: 700;
+            text-align: center;
+            margin-top: 5rem;
+            &::before {
+                content: "";
+                position: absolute;
+                width: 5%;
+                height: 3px;
+                background: #fff;
+                bottom: -5px;
+                left: 0;
+                @include animation('animBefore 3s infinite');
+            }
+            &::after {
+                content: "";
+                position: absolute;
+                width: 5%;
+                height: 3px;
+                background: #fff;
+                bottom: -5px;
+                left: 95%;
+
+            }
+        }
         .big-title {
             font-size: 144px;
             color: rgba(255, 255, 255, .3);

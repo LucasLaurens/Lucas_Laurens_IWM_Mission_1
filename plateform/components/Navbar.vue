@@ -9,13 +9,13 @@
             </div>
             <div class="main-links">
                 <ul>
-                    <li v-if="getUser !== '' && getUser !== null" @click.prevent="on_logout">
+                    <li v-if="getUser !== '' && getUser != null" @click.prevent="on_logout">
                         <button type="button" class="btn-style float-right">Logout</button>
                     </li>
                      <li @click.prevent="on_link" v-else>
                        <nuxt-link to="/login" class="btn-style float-right">Login</nuxt-link>
                     </li>
-                    <li v-if="getUser === '' || getUser === null" @click.prevent="on_link">
+                    <li v-if="getUser === '' && getUser == null" @click.prevent="on_link">
                        <nuxt-link type="button" to="/signup" class="btn-style float-right mr-2">Sign Up</nuxt-link>
                     </li>
                 </ul>
@@ -23,7 +23,7 @@
         </nav>
         <div class="toggle-menu" :class="[{'menu_active' : (menu_active == true)}]" >
             <div class="container mt-4">
-                <ul v-if="getUser !== '' && getUser !== null">
+                <ul v-if="getUser !== '' && getUser != null">
                     <li @click.prevent="on_link">
                         <nuxt-link to="/projects/dashboard" class="menu-link">Projects</nuxt-link>
                     </li>
@@ -64,6 +64,7 @@ export default {
     },
     mounted() {
         this.getUser = localStorage.getItem('user')
+        console.log("mounted", this.getUser)
     },
     methods: {
         ...Vuex.mapActions({
@@ -72,8 +73,9 @@ export default {
                 change_active: 'on_link'
             }),
         on_logout: function() {
-            this.on_link()
             this.getUser = ''
+            console.log("logout", this.getUser)
+            this.on_link()
             _logout()
         },
         toggle_menu: function() {
@@ -91,6 +93,7 @@ export default {
         getUser: {
             handler() {
                 this.getUser = localStorage.getItem('user')
+                console.log("watch", this.getUser)
             },
             deep: true,
         },
