@@ -71,9 +71,7 @@ export default {
     },
     methods: {
         _create_project: async function() {
-            // this.getUser = localStorage.getItem('user')
 
-            // if(this.getUser !== '' && this.getUser !== null) {
                 let db        = await firebase.database()
                 let snapshot  = await db.ref('projects').once('value')
                 let projects  = await snapshot.val();
@@ -91,7 +89,7 @@ export default {
                       status: 'created'
                     })
                 }
-            // }
+
         },
         _item_delete: async function(id, index) {
           let db        = await firebase.database()

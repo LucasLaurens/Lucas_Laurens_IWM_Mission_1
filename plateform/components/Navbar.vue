@@ -9,13 +9,13 @@
             </div>
             <div class="main-links">
                 <ul>
-                    <li v-if="getUser !== '' && getUser != null" @click.prevent="on_logout">
+                    <li v-if="items[0].logged === true" @click.prevent="on_logout">
                         <button type="button" class="btn-style float-right">Logout</button>
                     </li>
-                     <li @click.prevent="on_link" v-else>
+                     <li v-else @click.prevent="on_link">
                        <nuxt-link to="/login" class="btn-style float-right">Login</nuxt-link>
                     </li>
-                    <li v-if="getUser === '' && getUser == null" @click.prevent="on_link">
+                    <li v-if="items[0].logged !== true" @click.prevent="on_link">
                        <nuxt-link type="button" to="/signup" class="btn-style float-right mr-2">Sign Up</nuxt-link>
                     </li>
                 </ul>
@@ -23,7 +23,7 @@
         </nav>
         <div class="toggle-menu" :class="[{'menu_active' : (menu_active == true)}]" >
             <div class="container mt-4">
-                <ul v-if="getUser !== '' && getUser != null">
+                <ul v-if="items[0].logged !== false">
                     <li @click.prevent="on_link">
                         <nuxt-link to="/projects/dashboard" class="menu-link">Projects</nuxt-link>
                     </li>
@@ -54,27 +54,40 @@ import store from '../store/store'
 import Vuex from 'vuex'
 
 export default {
-    // store,
+    store,
     name: "navbar",
      data() {
         return {
-            getUser: '',
-            menu_active: false
+            menu_active: false,
+            logged_in: true,
         }
     },
-    mounted() {
-        this.getUser = localStorage.getItem('user')
-        console.log("mounted", this.getUser)
-    },
     methods: {
-        ...Vuex.mapActions({
-                change_active: 'toggle_menu'
-            }, {
-                change_active: 'on_link'
-            }),
+        ...Vuex.mapActions(
+            [
+                {
+                    change_active: 'toggle_menu'
+                },
+                {
+                    change_active: 'on_link'
+                },
+                {
+                    is_logged: 'logged'
+                },
+            ]
+        ),
+        logged: function () {
+            if(this.logged_in !== true && this.items[0].logged === true) {
+                try {
+                    this.is_logged(this.logged_in)
+                } catch (e) {
+                    console.error(e)
+                }
+            }
+        },
         on_logout: function() {
-            this.getUser = ''
-            console.log("logout", this.getUser)
+            this.logged_in = false
+            this.logged()
             this.on_link()
             _logout()
         },
@@ -89,14 +102,10 @@ export default {
             }
         }
     },
-    watch: {
-        getUser: {
-            handler() {
-                this.getUser = localStorage.getItem('user')
-                console.log("watch", this.getUser)
-            },
-            deep: true,
-        },
+    computed: {
+        items () {
+            return this.$store.state.items
+        }
     },
 }
 </script>

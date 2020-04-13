@@ -70,6 +70,7 @@ export const logged_in = (email, password) => {
             })
             .catch(error => {
                 localStorage.setItem('errorMessage', error.message);
+                alert(error.message)
             });
 
     } catch (error) {

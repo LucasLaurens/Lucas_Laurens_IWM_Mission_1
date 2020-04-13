@@ -6,7 +6,8 @@ Vue.use(Vuex)
 const state = {
     items: [
       {
-        menu_active: false
+        menu_active: false,
+        logged: false,
       }
     ]
 }
@@ -14,12 +15,18 @@ const state = {
 const mutations = {
   CHANGE_ACTIVE: (state, item) => {
     state.items[0].menu_active = item
+  },
+  LOGGED: (state, item) => {
+    state.items[0].logged = item
   }
 }
 
 const actions = {
   toggle_menu: (store, menu_active) => {
     store.commit('CHANGE_ACTIVE', menu_active)
+  },
+  logged: (store, logged) => {
+    store.commit('LOGGED', logged)
   }
 }
 

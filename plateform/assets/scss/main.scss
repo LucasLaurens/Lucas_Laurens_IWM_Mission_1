@@ -33,7 +33,15 @@
 }
 
 @include keyframes(animBefore) {
-    50% { width: 100%; }
+    50% { width: 50%; background: $second-color; }
+}
+
+@include keyframes(animAfter) {
+    50% { width: 50%; background: $second-color; }
+}
+
+@include keyframes(animInside) {
+    50% { color: $second-color; }
 }
 
 body {
@@ -161,6 +169,7 @@ body {
             font-weight: 700;
             text-align: center;
             margin-top: 5rem;
+            @include animation('animInside 3s infinite');
             &::before {
                 content: "";
                 position: absolute;
@@ -178,8 +187,8 @@ body {
                 height: 3px;
                 background: #fff;
                 bottom: -5px;
-                left: 95%;
-
+                right: 0;
+                @include animation('animAfter 3s infinite');
             }
         }
         .big-title {

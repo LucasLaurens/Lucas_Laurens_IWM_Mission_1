@@ -36,8 +36,11 @@
 <script>
 import * as firebase from "firebase/app";
 import { sign_up } from '../components/functions/Auth'
+import store from '../store/store'
+import Vuex from 'vuex'
 
 export default {
+    store,
     name: "signup",
     data() {
       return {
@@ -48,9 +51,20 @@ export default {
         confirm_password: '',
         errors: [],
         emailRegex: /^[A-Za-z0-9+_.-]+@(.+)$/gm,
+        logged_in: false,
       }
     },
     methods: {
+        ...Vuex.mapActions(
+            {
+                is_logged: 'logged'
+            }
+        ),
+        logged: function () {
+            if(this.logged_in === true) {
+                this.is_logged(this.logged_in)
+            }
+        },
         signUp: function() {
             let new_error
             let number
@@ -89,9 +103,16 @@ export default {
 
             if (number == 3) {
                 sign_up(this.firstName, this.lastName, this.email, this.password)
-                this.$nuxt.$router.replace({ path: '/login' })
+                this.logged_in = true
+                this.logged()
+
+                let user = firebase.auth().currentUser;
+
+                if (user !== null) {
+                    this.$nuxt.$router.replace({ path: '/login' })
+                }
             }
-        }
-    }
+        },
+    },
 }
 </script>

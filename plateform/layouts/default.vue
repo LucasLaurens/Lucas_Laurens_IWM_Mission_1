@@ -27,10 +27,8 @@ export default {
       is_loaded: false,
     }
   },
-  created() {
-      this.is_loaded = true
-  },
   mounted() {
+    this.is_loaded = true
     // a key map of allowed keys
     var allowedKeys = {
       37: 'left',

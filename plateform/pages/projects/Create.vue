@@ -45,7 +45,6 @@ export default {
             title: '',
             description: '',
             errors: [],
-            getUser: '',
         }
     },
     methods: {
@@ -66,9 +65,7 @@ export default {
             }
 
             if (number == 1) {
-                this.getUser = localStorage.getItem('user')
 
-                if(this.getUser !== '' && this.getUser !== null) {
                     // Firebase references
                     const rootReference = firebase.database().ref();
                     const alertsReference = rootReference.child("projects");
@@ -81,7 +78,6 @@ export default {
 
                     this.title = ""
                     this.description = ""
-                }
             }
         }
     },

@@ -69,7 +69,6 @@ export default {
             errors: [],
             email: '',
             phone: '',
-            getUser: '',
         }
     },
     methods: {
@@ -101,9 +100,7 @@ export default {
             }
 
             if (number == 2) {
-                this.getUser = localStorage.getItem('user')
 
-                if(this.getUser !== '' && this.getUser !== null) {
                     // Firebase references
                     const rootReference = firebase.database().ref();
                     const alertsReference = rootReference.child("clients");
@@ -120,7 +117,6 @@ export default {
                     this.lastName  = ""
                     this.email     = ""
                     this.phone     = ""
-                }
             }
         }
     },

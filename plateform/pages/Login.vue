@@ -20,8 +20,11 @@
 <script>
 import * as firebase from "firebase/app";
 import { logged_in } from '../components/functions/Auth'
+import store from '../store/store'
+import Vuex from 'vuex'
 
 export default {
+    store,
     name: "login",
     data() {
       return {
@@ -29,9 +32,20 @@ export default {
         password: '',
         errors: [],
         emailRegex: /^[A-Za-z0-9+_.-]+@(.+)$/gm,
+        logged_in: false,
       }
     },
     methods: {
+      ...Vuex.mapActions(
+            {
+                is_logged: 'logged'
+            }
+      ),
+      logged: function () {
+          if(this.logged_in === true) {
+            this.is_logged(this.logged_in)
+          }
+      },
       login: function () {
         let error_message
         let new_error
@@ -63,11 +77,18 @@ export default {
           }
 
           if (number == 2) {
+            this.logged_in = true
+            this.logged()
             logged_in(this.email, this.password)
-            this.$nuxt.$router.replace({ path: '/' })
+
+            let user = firebase.auth().currentUser;
+
+            if (user !== null) {
+              this.$nuxt.$router.replace({ path: '/' })
+            }
           }
         }
       }
-    }
+    },
 }
 </script>
