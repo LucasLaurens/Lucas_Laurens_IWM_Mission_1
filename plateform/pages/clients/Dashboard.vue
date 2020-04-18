@@ -1,81 +1,90 @@
 <template>
   <div class="fullscreen container">
       <h1 class="big-title">Clients</h1>
-      <div class="clients">
-        <div class="errors alert alert-danger" v-for="(error, k) in errors" :key="k">
-          {{error}}
+      <div v-if="this.is_loaded === true">
+        <div class="loader">
+          <loader />
         </div>
-        <div v-if="clients.length > 0">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                    <th scope="col">Number</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Manage</th>
-                    <th scope="col">Pdf</th>
+      </div>
+      <div v-else>
+        <div class="clients">
+          <div class="errors alert alert-danger" v-for="(error, k) in errors" :key="k">
+            {{error}}
+          </div>
+          <div v-if="clients.length > 0">
+              <table class="table table-striped">
+                  <thead>
+                      <tr>
+                      <th scope="col">Number</th>
+                      <th scope="col">First Name</th>
+                      <th scope="col">Last Name</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Phone</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Manage</th>
+                      <th scope="col">Pdf</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(client, k) in clients" :key="k">
+                      <td><strong>#{{k+1}}</strong></td>
+
+                      <td v-if="client.status !== 'created'">
+                          <input v-model="firstName" type="text" placeholder="firstName" id="firstName" name="firstName" />
+                      </td>
+                      <td v-else>
+                          {{client.firstName}}
+                      </td>
+
+                      <td v-if="client.status !== 'created'">
+                          <input v-model="lastName" type="text" placeholder="lastName" id="lastName" name="lastName" />
+                      </td>
+                      <td v-else>
+                          {{client.lastName}}
+                      </td>
+
+                      <td v-if="client.status !== 'created'">
+                          <input v-model="email" type="text" placeholder="email" id="email" name="email" />
+                      </td>
+                      <td v-else>
+                          {{client.email}}
+                      </td>
+
+                      <td v-if="client.status !== 'created'">
+                          <input v-model="phone" type="text" placeholder="phone" id="phone" name="phone" />
+                      </td>
+                      <td v-else>
+                          {{client.phone}}
+                      </td>
+
+                      <td>{{client.date.getFullYear()}} / {{client.date.getMonth() + 1}} / {{client.date.getDate()}} - {{client.date.getHours()}}:{{client.date.getMinutes()}}:{{client.date.getSeconds()}}</td>
+
+                      <td v-if="client.status !== 'created'">
+                        <button class="btn btn-secondary" @click="_item_save(client.id, k)">Save</button>
+                      </td>
+                      <td v-else>
+                          <button class="btn btn-secondary col-sm-12 col-xs-12" @click="_item_edit(k)">Edit</button>
+                          <button class="btn btn-danger col-sm-12 col-xs-12 mt-2" @click="_item_delete(client.id, k)">Delete</button>
+                      </td>
+                      <td>
+                          <button class="btn btn-success" @click="_item_pdf(client)">Download</button>
+                      </td>
                     </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(client, k) in clients" :key="k">
-                    <td><strong>#{{k+1}}</strong></td>
+                  </tbody>
+              </table>
+              <button @click.prevent="_load_more" class="btn btn-success">Load More</button>
+          </div>
+          <div v-else class="alert alert-warning">
+              There is no clients for now
+          </div>
 
-                    <td v-if="client.status !== 'created'">
-                        <input v-model="firstName" type="text" placeholder="firstName" id="firstName" name="firstName" />
-                    </td>
-                    <td v-else>
-                        {{client.firstName}}
-                    </td>
-
-                    <td v-if="client.status !== 'created'">
-                        <input v-model="lastName" type="text" placeholder="lastName" id="lastName" name="lastName" />
-                    </td>
-                    <td v-else>
-                        {{client.lastName}}
-                    </td>
-
-                    <td v-if="client.status !== 'created'">
-                        <input v-model="email" type="text" placeholder="email" id="email" name="email" />
-                    </td>
-                    <td v-else>
-                        {{client.email}}
-                    </td>
-
-                    <td v-if="client.status !== 'created'">
-                        <input v-model="phone" type="text" placeholder="phone" id="phone" name="phone" />
-                    </td>
-                    <td v-else>
-                        {{client.phone}}
-                    </td>
-
-                    <td>{{client.date.getFullYear()}} / {{client.date.getMonth() + 1}} / {{client.date.getDate()}} - {{client.date.getHours()}}:{{client.date.getMinutes()}}:{{client.date.getSeconds()}}</td>
-
-                    <td v-if="client.status !== 'created'">
-                      <button class="btn btn-secondary" @click="_item_save(client.id, k)">Save</button>
-                    </td>
-                    <td v-else>
-                        <button class="btn btn-secondary col-sm-12 col-xs-12" @click="_item_edit(k)">Edit</button>
-                        <button class="btn btn-danger col-sm-12 col-xs-12 mt-2" @click="_item_delete(client.id, k)">Delete</button>
-                    </td>
-                    <td>
-                        <button class="btn btn-success" @click="_item_pdf(client)">Download</button>
-                    </td>
-                  </tr>
-                </tbody>
-            </table>
         </div>
-        <div v-else class="alert alert-warning">
-            There is no clients for now
-        </div>
-
       </div>
   </div>
 </template>
 <script>
 import * as firebase from "firebase/app";
+import Loader from "../../components/Loader";
 
 export default {
     name: "clients",
@@ -87,13 +96,38 @@ export default {
           lastName: '',
           email: '',
           phone: '',
-          cleints_length: 3,
+          clients_length: 3,
+          is_loaded: false,
         }
     },
+    components: {
+      Loader
+    },
     mounted() {
-      this._create_clients(this.cleints_length)
+      this._create_clients(this.clients_length)
     },
     methods: {
+         _load_more: async function () {
+          this.is_loaded = true
+
+          let db              = await firebase.database()
+          let snapshot        = await db.ref('clients').once('value')
+          let clients         = await snapshot.val();
+          let array           = []
+
+           for (let item of Object.entries(clients)) {
+              array.push(item)
+           }
+          let clients_length = array.length
+          let diff           = clients_length - this.clients_length
+
+          if(this.clients_length > 0) {
+            this.clients        = []
+            this.clients_length = this.clients_length + diff
+            this._create_clients(this.clients_length)
+            this.is_loaded = false
+          }
+        },
         _create_clients: async function(number) {
 
                 let db        = await firebase.database()

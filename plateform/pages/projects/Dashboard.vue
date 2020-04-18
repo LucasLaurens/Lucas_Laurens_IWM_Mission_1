@@ -1,7 +1,7 @@
 <template>
   <div class="fullscreen container">
       <h1 class="big-title">Projects</h1>
-       <div v-if="this.is_loaded === true">
+      <div v-if="this.is_loaded === true">
         <div class="loader">
           <loader />
         </div>
