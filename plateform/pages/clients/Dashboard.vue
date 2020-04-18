@@ -20,7 +20,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(client, k) in clients" :key="k">
+                  <tr v-for="(client, k) in clients" :key="k">
                     <td><strong>#{{k+1}}</strong></td>
 
                     <td v-if="client.status !== 'created'">
@@ -63,7 +63,7 @@
                     <td>
                         <button class="btn btn-success" @click="_item_pdf(client)">Download</button>
                     </td>
-                    </tr>
+                  </tr>
                 </tbody>
             </table>
         </div>
@@ -76,7 +76,6 @@
 </template>
 <script>
 import * as firebase from "firebase/app";
-import jsPDF from 'jspdf'
 
 export default {
     name: "clients",
@@ -87,17 +86,18 @@ export default {
           firstName: '',
           lastName: '',
           email: '',
-          phone: ''
+          phone: '',
+          cleints_length: 3,
         }
     },
     mounted() {
-      this._create_clients()
+      this._create_clients(this.cleints_length)
     },
     methods: {
-        _create_clients: async function() {
+        _create_clients: async function(number) {
 
                 let db        = await firebase.database()
-                let snapshot  = await db.ref('clients').once('value')
+                let snapshot  = await db.ref('clients').limitToLast(number).once('value')
                 let clients  = await snapshot.val();
 
                 for (let item of Object.entries(clients)) {
@@ -162,14 +162,20 @@ export default {
           }
         },
         _item_pdf: function(client) {
-          let pdf       = new jsPDF();
-          let pdf_name  = `${client.firstName}_${client.lastName}.pdf`
 
-          pdf.text('first name : ' + client.firstName, 10, 10);
-          pdf.text('filastrst name : ' + client.lastName, 10, 20);
-          pdf.text('email : ' + client.email, 10, 30);
-          pdf.text('phone : ' + client.phone, 10, 40);
-          pdf.save(pdf_name);
+          if(this.clients.length > 0) {
+            const jsPDF = require('jspdf')
+
+            let pdf_name  = `${client.firstName}_${client.lastName}.pdf`
+            let pdf       = new jsPDF();
+
+            pdf.text('first name : ' + client.firstName, 10, 10);
+            pdf.text('filastrst name : ' + client.lastName, 10, 20);
+            pdf.text('email : ' + client.email, 10, 30);
+            pdf.text('phone : ' + client.phone, 10, 40);
+
+            pdf.save(pdf_name);
+          }
         }
     },
 }
