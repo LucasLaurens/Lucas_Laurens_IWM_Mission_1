@@ -1,60 +1,69 @@
 <template>
   <div class="fullscreen container">
       <h1 class="big-title">Projects</h1>
-      <div class="projects">
-        <div class="errors alert alert-danger" v-for="(error, k) in errors" :key="k">
-          {{error}}
+       <div v-if="this.is_loaded === true">
+        <div class="loader">
+          <loader />
         </div>
-        <div v-if="projects.length > 0">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">Number</th>
-                <th scope="col">Title</th>
-                <th scope="col">Description</th>
-                <th scope="col">Date</th>
-                <th scope="col">Manage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(project, k) in projects" :key="k">
-                <td><strong>#{{k+1}}</strong></td>
+      </div>
+      <div v-else>
+        <div class="projects">
+          <div class="errors alert alert-danger" v-for="(error, k) in errors" :key="k">
+            {{error}}
+          </div>
+          <div v-if="projects.length > 0">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Number</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Manage</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(project, k) in projects" :key="k">
+                  <td><strong>#{{k+1}}</strong></td>
 
-                <td v-if="project.status !== 'created'">
-                  <input v-model="title" type="text" placeholder="title" id="title" name="title" />
-                </td>
-                <td v-else>
-                  {{project.title}}
-                </td>
+                  <td v-if="project.status !== 'created'">
+                    <input v-model="title" type="text" placeholder="title" id="title" name="title" />
+                  </td>
+                  <td v-else>
+                    {{project.title}}
+                  </td>
 
-                <td v-if="project.status !== 'created'">
-                  <input v-model="description" type="text" placeholder="description" id="description" name="description" />
-                </td>
-                <td v-else>
-                  {{project.description}}
-                </td>
+                  <td v-if="project.status !== 'created'">
+                    <input v-model="description" type="text" placeholder="description" id="description" name="description" />
+                  </td>
+                  <td v-else>
+                    {{project.description}}
+                  </td>
 
-                <td>{{project.date.getFullYear()}} / {{project.date.getMonth() + 1}} / {{project.date.getDate()}} - {{project.date.getHours()}}:{{project.date.getMinutes()}}:{{project.date.getSeconds()}}</td>
+                  <td>{{project.date.getFullYear()}} / {{project.date.getMonth() + 1}} / {{project.date.getDate()}} - {{project.date.getHours()}}:{{project.date.getMinutes()}}:{{project.date.getSeconds()}}</td>
 
-                <td v-if="project.status !== 'created'">
-                <button class="btn btn-secondary" @click="_item_save(project.id, k)">Save</button>
-                </td>
-                <td v-else>
-                  <button class="btn btn-secondary col-sm-12 col-xs-12" @click="_item_edit(k)">Edit</button>
-                  <button class="btn btn-danger col-sm-12 col-xs-12 mt-2" @click="_item_delete(project.id, k)">Delete</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="alert alert-warning" v-else>
-           There is no projects for now
+                  <td v-if="project.status !== 'created'">
+                  <button class="btn btn-secondary" @click="_item_save(project.id, k)">Save</button>
+                  </td>
+                  <td v-else>
+                    <button class="btn btn-secondary col-sm-12 col-xs-12" @click="_item_edit(k)">Edit</button>
+                    <button class="btn btn-danger col-sm-12 col-xs-12 mt-2" @click="_item_delete(project.id, k)">Delete</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <button @click.prevent="_load_more" class="btn btn-success">Load More</button>
+          </div>
+          <div class="alert alert-warning" v-else>
+            There is no projects for now
+          </div>
         </div>
       </div>
   </div>
 </template>
 <script>
 import * as firebase from "firebase/app";
+import Loader from "../../components/Loader";
 
 export default {
     name: "projects",
@@ -63,17 +72,43 @@ export default {
           projects: [],
           errors: [],
           title: '',
-          description: ''
+          description: '',
+          projects_length: 3,
+          is_loaded: false,
         }
     },
+    components: {
+      Loader
+    },
     mounted() {
-      this._create_project()
+      this._create_project(this.projects_length)
     },
     methods: {
-        _create_project: async function() {
+        _load_more: async function () {
+          this.is_loaded = true
+
+          let db              = await firebase.database()
+          let snapshot        = await db.ref('projects').once('value')
+          let projects        = await snapshot.val();
+          let array           = []
+
+           for (let item of Object.entries(projects)) {
+              array.push(item)
+           }
+          let projects_length = array.length
+          let diff            = projects_length - this.projects_length
+
+          if(this.projects_length > 0) {
+            this.projects        = []
+            this.projects_length = this.projects_length + diff
+            this._create_project(this.projects_length)
+            this.is_loaded = false
+          }
+        },
+        _create_project: async function(number) {
 
                 let db        = await firebase.database()
-                let snapshot  = await db.ref('projects').once('value')
+                let snapshot  = await db.ref('projects').limitToLast(number).once('value')
                 let projects  = await snapshot.val();
 
                 for (let item of Object.entries(projects)) {
