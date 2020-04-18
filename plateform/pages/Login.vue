@@ -80,12 +80,7 @@ export default {
             this.logged_in = true
             this.logged()
             logged_in(this.email, this.password)
-
-            let user = firebase.auth().currentUser;
-
-            if (user !== null) {
-              this.$nuxt.$router.replace({ path: '/' })
-            }
+            this.$nuxt.$router.replace({ path: '/' })
           }
         }
       }

@@ -25,6 +25,9 @@ const actions = {
   toggle_menu: (store, menu_active) => {
     store.commit('CHANGE_ACTIVE', menu_active)
   },
+  on_link: (store, menu_active) => {
+    store.commit('CHANGE_ACTIVE', menu_active)
+  },
   logged: (store, logged) => {
     store.commit('LOGGED', logged)
   }

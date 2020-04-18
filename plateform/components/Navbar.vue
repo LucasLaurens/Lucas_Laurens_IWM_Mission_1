@@ -38,7 +38,7 @@
                     </li>
                 </ul>
                 <ul v-else>
-                    <li @click.prevent="on_link">
+                    <li>
                         <span class="menu-link">you are not connected</span>
                     </li>
                 </ul>
@@ -64,17 +64,19 @@ export default {
     },
     methods: {
         ...Vuex.mapActions(
-            [
-                {
-                    change_active: 'toggle_menu'
-                },
-                {
-                    change_active: 'on_link'
-                },
-                {
-                    is_logged: 'logged'
-                },
-            ]
+            {
+                change_active: 'toggle_menu'
+            },
+        ),
+         ...Vuex.mapActions(
+            {
+                change_active: 'on_link'
+            },
+        ),
+         ...Vuex.mapActions(
+            {
+                is_logged: 'logged'
+            },
         ),
         logged: function () {
             if(this.logged_in !== true && this.items[0].logged === true) {
