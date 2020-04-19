@@ -105,12 +105,7 @@ export default {
                 sign_up(this.firstName, this.lastName, this.email, this.password)
                 this.logged_in = true
                 this.logged()
-
-                let user = firebase.auth().currentUser;
-
-                if (user !== null) {
-                    this.$nuxt.$router.replace({ path: '/login' })
-                }
+                this.$nuxt.$router.replace({ path: '/login' })
             }
         },
     },

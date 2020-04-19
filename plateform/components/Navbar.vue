@@ -60,6 +60,7 @@ export default {
         return {
             menu_active: false,
             logged_in: true,
+            current_user: localStorage.getItem('user')
         }
     },
     methods: {
@@ -88,10 +89,11 @@ export default {
             }
         },
         on_logout: function() {
-            this.logged_in = false
-            this.logged()
             this.on_link()
             _logout()
+            this.logged_in = false
+            this.logged()
+            this.$nuxt.$router.replace({ path: '/' })
         },
         toggle_menu: function() {
            this.menu_active = !this.menu_active

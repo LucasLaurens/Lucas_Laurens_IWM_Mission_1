@@ -19,7 +19,7 @@
 </template>
 <script>
 import * as firebase from "firebase/app";
-import { logged_in } from '../components/functions/Auth'
+import { logged_in, } from '../components/functions/Auth'
 import store from '../store/store'
 import Vuex from 'vuex'
 
@@ -77,10 +77,14 @@ export default {
           }
 
           if (number == 2) {
-            this.logged_in = true
-            this.logged()
-            logged_in(this.email, this.password)
-            this.$nuxt.$router.replace({ path: '/' })
+            try {
+              logged_in(this.email, this.password)
+              this.logged_in = true
+              this.logged()
+              this.$nuxt.$router.replace({ path: '/' })
+            } catch (e) {
+              console.error(e)
+            }
           }
         }
       }
