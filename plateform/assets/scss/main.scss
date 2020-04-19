@@ -306,3 +306,13 @@ body {
         }
     }
 }
+
+@media only screen and (max-width: 775px)  {
+    .main {
+        .menu_active {
+            ul {
+                margin-left: 0 !important;
+            }
+        }
+    }
+}
